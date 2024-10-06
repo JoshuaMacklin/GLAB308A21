@@ -30,6 +30,7 @@ adventurer.roll()
 adventurer.roll()
 
 class Character {
+    static MAX_HEALTH = 100;
     constructor (name) {
       this.name = name;
       this.health = 100;
@@ -42,12 +43,18 @@ class Character {
 }
 
 class Adventurer extends Character {
+    static ROLES = ["Fighter", "Healer", "Wizard"]
+
     constructor (name, role) {
-      super(name);
-      // Adventurers have specialized roles.
-      this.role = role;
-      // Every adventurer starts with a bed and 50 gold coins.
-      this.inventory.push("bedroll", "50 gold coins");
+        super(name);
+        if (Adventurer.ROLES.includes(role)) {
+            this.role = role
+        } else {
+            throw new Error(`Invalid role: ${role}. Must be one of: ${Adventurer.ROLES.join(', ')}`);
+        }
+        // Adventurers have specialized roles.
+        // Every adventurer starts with a bed and 50 gold coins.
+        this.inventory.push("bedroll", "50 gold coins");
     }
     // Adventurers have the ability to scout ahead of them.
     scout() {
@@ -70,7 +77,7 @@ class Companion extends Character {
         super.roll()
     }
 }
-const robin = new Adventurer("Robin");
+const robin = new Adventurer("Robin", "Wizard");
 robin.inventory = ["sword", "potion", "artifact"];
 robin.companion = new Companion("Leo");
 robin.companion.type = "Cat";
@@ -86,3 +93,5 @@ robin.companion.companion.roll()
 
 console.log("--------");
 robin.companion.companion.runAhead()
+
+console.log(robin);

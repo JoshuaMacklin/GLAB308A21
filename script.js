@@ -39,6 +39,7 @@ class Character {
     roll(mod = 0) {
         const result = Math.floor(Math.random() * 20) + 1 + mod;
         console.log(`${this.name} rolled a ${result}.`)
+        return result
     }
 }
 
@@ -64,6 +65,34 @@ class Adventurer extends Character {
     sleep() {
         console.log(`${this.name} takes a nap...`);
         super.roll()
+    }
+    duel(adventurer){
+        while (this.health > 50 && adventurer.health >50 ){
+            let hRoll = this.roll()
+            let oRoll = adventurer.roll()
+
+            if( hRoll > oRoll) {
+                adventurer.health--
+                console.log(`${this.name} attacks. ${adventurer.name} takes 1 damage. ${this.name}:${this.health}hp | ${adventurer.name}:${adventurer.health}hp`);
+            } else if (hRoll == oRoll) {
+                console.log("Stalemate");
+                continue;
+            } else {
+                this.health--
+                console.log(`${adventurer.name} attacks. ${this.name} takes 1 damage. ${this.name}:${this.health}hp | ${adventurer.name}:${adventurer.health}hp`);
+            }
+        } 
+
+        if (this.health > adventurer.health) {
+            console.log(`${this.name} is Victorious!`);
+        } else {
+            console.log(`${adventurer.name} is Victorious!`);
+        }
+    }
+
+    kingPrefers(adventurer) {
+        let shortestName = this.name.length > adventurer.name.length ? adventurer.name : this.name
+        console.log(`the king prefers ${shortestName} simply because their name is shorter or he heard it first`);
     }
 }
 
@@ -91,7 +120,18 @@ robin.roll()
 robin.companion.roll()
 robin.companion.companion.roll()
 
-console.log("--------");
 robin.companion.companion.runAhead()
 
-console.log(robin);
+console.log("--------");
+
+const ralph = new Adventurer("Ralphh", "Healer");
+
+robin.duel(ralph);
+robin.kingPrefers(ralph);
+
+
+const gerald = new Adventurer("Gerald", "Fighter");
+const gus = new Adventurer("Gus", "Healer");
+
+gerald.duel(gus)
+gerald.kingPrefers(gus)
